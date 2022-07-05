@@ -2,6 +2,7 @@ import { useMatches } from "@remix-run/react";
 import { useMemo } from "react";
 
 import type { User } from "~/models/user.server";
+import type { Transaction } from "./models/transaction.model";
 
 const DEFAULT_REDIRECT = "/";
 
@@ -71,4 +72,23 @@ export function useUser(): User {
 
 export function validateEmail(email: unknown): email is string {
   return typeof email === "string" && email.length > 3 && email.includes("@");
+}
+
+export function getTransactionStats(transactions: Array<Transaction>): {
+  balance: number;
+  expenses: number;
+  income: number;
+} {
+  const expenses = transactions
+    .filter((tranasction) => tranasction.type === "expense")
+    .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
+  const income = transactions
+    .filter((tranasction) => tranasction.type === "income")
+    .reduce((total, transaction) => total + transaction.amount, 0);
+
+  return {
+    balance: income - expenses,
+    expenses,
+    income,
+  };
 }

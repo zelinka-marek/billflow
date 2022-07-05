@@ -7,8 +7,8 @@ import {
 import { useFetcher } from "@remix-run/react";
 import classNames from "clsx";
 import { compareDesc, format, isToday, isYesterday } from "date-fns";
-import { useDisclosure } from "~/hooks/use-disclosure";
 
+import { useDisclosure } from "~/hooks/use-disclosure";
 import type { Transaction } from "~/models/transaction.model";
 import { getTransactionStats } from "~/utils";
 import { EditTransactionModal } from "./edit-transaction-modal";

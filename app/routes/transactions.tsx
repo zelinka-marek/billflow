@@ -1,4 +1,4 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
@@ -16,6 +16,12 @@ export const loader: LoaderFunction = async ({ request }) => {
   const transactions = await getTransactionListItems({ userId });
 
   return json<LoaderData>({ transactions });
+};
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Transactions - billflow",
+  };
 };
 
 export default function TransactionsPage() {

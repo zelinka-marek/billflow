@@ -17,13 +17,22 @@ import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    {
+      rel: "preload",
+      href: "/fonts/Inter-roman.var.woff2",
+      as: "font",
+      type: "font/woff2",
+      crossOrigin: "anonymous",
+    },
+  ];
 };
 
 export const meta: MetaFunction = () => {
   return {
     charset: "utf-8",
-    title: "Remix Notes",
+    title: "billflow",
     viewport: "width=device-width,initial-scale=1",
   };
 };

@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { Navbar } from "~/components/navbar";
+import { TransactionList } from "~/components/transaction-list";
 import { TransactionOverview } from "~/components/transaction-overview";
 import { getTransactionListItems } from "~/models/transaction.model";
 import { requireUserId } from "~/session.server";
@@ -38,6 +39,12 @@ export default function TransactionsPage() {
                 Overview
               </h2>
               <TransactionOverview transactions={data.transactions} />
+            </section>
+            <section className="space-y-2">
+              <h2 className="text-lg font-medium leading-6 text-gray-900">
+                History
+              </h2>
+              <TransactionList transactions={data.transactions} />
             </section>
           </div>
         </main>

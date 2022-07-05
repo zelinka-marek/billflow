@@ -16,4 +16,7 @@ module.exports = {
       version: 27,
     },
   },
+  rules: {
+    "jsx-a11y/no-redundant-roles": "off",
+  },
 };

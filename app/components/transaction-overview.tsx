@@ -1,7 +1,7 @@
 import type { Transaction } from "~/models/transaction.model";
 import { getTransactionStats } from "~/utils";
 
-const numberFmt = new Intl.NumberFormat("en-US", {
+const currencyFmt = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
@@ -20,7 +20,7 @@ export function TransactionOverview({
           Current Balance
         </dt>
         <dd className="text-2xl font-semibold text-gray-900">
-          {numberFmt.format(balance)}
+          {currencyFmt.format(balance)}
         </dd>
       </div>
       <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -28,7 +28,7 @@ export function TransactionOverview({
           Total Expenses
         </dt>
         <dd className="text-2xl font-semibold text-gray-900">
-          {numberFmt.format(expenses)}
+          {currencyFmt.format(expenses)}
         </dd>
       </div>
       <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
@@ -36,7 +36,7 @@ export function TransactionOverview({
           Total Income
         </dt>
         <dd className="text-2xl font-semibold text-gray-900">
-          {numberFmt.format(income)}
+          {currencyFmt.format(income)}
         </dd>
       </div>
     </dl>

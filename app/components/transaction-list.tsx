@@ -32,7 +32,10 @@ export function TransactionList({
           <div key={group.date} className="relative">
             <div className="sticky top-0 flex items-center bg-gray-50/90 px-4 py-3 ring-1 ring-gray-900/10 backdrop-blur-sm">
               <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-medium text-gray-500">
+                <h3
+                  title={format(new Date(group.date), "P")}
+                  className="text-sm font-medium text-gray-500"
+                >
                   {format(new Date(group.date), "MMM d")}
                   {isToday(new Date(group.date))
                     ? ", Today"

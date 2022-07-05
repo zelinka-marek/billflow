@@ -2,7 +2,7 @@ import { Form, Link } from "@remix-run/react";
 
 import { useOptionalUser } from "~/utils";
 
-export default function Index() {
+export default function IndexPage() {
   const user = useOptionalUser();
 
   return (

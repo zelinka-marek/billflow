@@ -1,10 +1,17 @@
-import { ClockIcon, TagIcon, TrashIcon } from "@heroicons/react/solid";
+import {
+  ClockIcon,
+  PencilIcon,
+  TagIcon,
+  TrashIcon,
+} from "@heroicons/react/solid";
 import { useFetcher } from "@remix-run/react";
 import classNames from "clsx";
 import { compareDesc, format, isToday, isYesterday } from "date-fns";
+import { useDisclosure } from "~/hooks/use-disclosure";
 
 import type { Transaction } from "~/models/transaction.model";
 import { getTransactionStats } from "~/utils";
+import { EditTransactionModal } from "./edit-transaction-modal";
 
 const currencyFmt = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -94,6 +101,8 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
     deleteTransactionFetcher.submission?.formData.get("transactionId") ===
     transaction.id;
 
+  const editModal = useDisclosure();
+
   return (
     <li
       className={classNames(
@@ -101,6 +110,11 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         "flex items-center p-4 sm:px-6"
       )}
     >
+      <EditTransactionModal
+        open={editModal.isOpen}
+        onClose={editModal.onClose}
+        transaction={transaction}
+      />
       <div className="min-w-0 flex-1">
         <div className="truncate">
           <p className="truncate text-sm font-medium text-teal-600">
@@ -127,19 +141,27 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         </div>
       </div>
       <div className="ml-5 flex flex-shrink-0 gap-3">
+        <button
+          type="submit"
+          onClick={editModal.onOpen}
+          className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+        >
+          <span className="sr-only">Edit transaction</span>
+          <PencilIcon className="h-5 w-5" />
+        </button>
         <deleteTransactionFetcher.Form method="post">
           <input type="hidden" name="intent" value="deleteTransaction" />
           <input type="hidden" name="transactionId" value={transaction.id} />
           <button
             type="submit"
-            title={
-              isPendingDeletion
-                ? "Deleting transaction..."
-                : "Delete transaction"
-            }
             disabled={isPendingDeletion}
             className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 hover:enabled:bg-gray-50"
           >
+            <span className="sr-only">
+              {isPendingDeletion
+                ? "Deleting transaction..."
+                : "Delete transaction"}
+            </span>
             <TrashIcon className="h-5 w-5" />
           </button>
         </deleteTransactionFetcher.Form>

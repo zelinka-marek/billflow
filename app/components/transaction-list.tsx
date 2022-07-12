@@ -212,7 +212,7 @@ function buildTransactionGroups(
   // sort every transaction in each group by transaction.dateTime (desc)
   for (const group of groups) {
     group.transactions.sort((a, b) =>
-      compareDesc(new Date(a.dateTime), new Date(b.dateTime))
+      compareDesc(new Date(a.createdAt), new Date(b.createdAt))
     );
   }
 

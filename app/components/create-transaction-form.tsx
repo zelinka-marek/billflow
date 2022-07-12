@@ -2,14 +2,14 @@ import { useFetcher } from "@remix-run/react";
 import { format } from "date-fns";
 import * as React from "react";
 
-type CreateTransactionActionData = {
+interface CreateTransactionActionData {
   errors: {
     type?: string;
     amount?: string;
     category?: string;
     dateTime?: string;
   };
-};
+}
 
 export function CreateTransactionForm() {
   const createTransactionFetcher = useFetcher();
@@ -71,7 +71,7 @@ export function CreateTransactionForm() {
                 createTransactionData?.errors?.type ? true : undefined
               }
               aria-describedby="type-error"
-              className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base shadow-sm focus:outline-none focus-visible:border-teal-500 focus-visible:ring-teal-500 sm:text-sm"
+              className="block w-full rounded-md border border-gray-300 bg-gray-50 pr-10 focus:outline-none focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
             >
               <option value="expense">Expense</option>
               <option value="income">Income</option>
@@ -90,7 +90,7 @@ export function CreateTransactionForm() {
           >
             Amount
           </label>
-          <div className="relative mt-1 rounded-md shadow-sm">
+          <div className="relative mt-1 rounded-md">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span className="text-gray-500 sm:text-sm">$</span>
             </div>
@@ -105,7 +105,7 @@ export function CreateTransactionForm() {
                 createTransactionData?.errors?.amount ? true : undefined
               }
               aria-describedby="amount-error price-currency"
-              className="block w-full rounded-md border-gray-300 pl-7 pr-12  focus-visible:border-teal-500 focus-visible:ring-teal-500 sm:text-sm"
+              className="block w-full rounded-md border-gray-300 bg-gray-50 pl-7 pr-12 focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
               placeholder="0.00"
             />
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -137,7 +137,7 @@ export function CreateTransactionForm() {
                 createTransactionData?.errors?.category ? true : undefined
               }
               aria-describedby="category-error"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-teal-500 focus-visible:ring-teal-500 sm:text-sm"
+              className="block w-full rounded-md border-gray-300 bg-gray-50 focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
             />
           </div>
           {createTransactionData?.errors?.category ? (
@@ -164,7 +164,7 @@ export function CreateTransactionForm() {
                 createTransactionData?.errors?.dateTime ? true : undefined
               }
               aria-describedby="dateTime-error"
-              className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-teal-500 focus-visible:ring-teal-500 sm:text-sm"
+              className="block w-full rounded-md border-gray-300 bg-gray-50 focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
             />
           </div>
           {createTransactionData?.errors?.dateTime ? (
@@ -174,19 +174,21 @@ export function CreateTransactionForm() {
           ) : null}
         </div>
         <div className="sm:col-span-2">
-          <button
-            type="submit"
-            className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 hover:enabled:bg-teal-700 disabled:opacity-75"
-            disabled={isPending}
-          >
-            {isPending ? "Saving..." : "Save"}
-          </button>
+          <div className="sm:flex sm:justify-end">
+            <button
+              type="submit"
+              className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 hover:enabled:bg-brand-700 disabled:opacity-75 sm:w-auto"
+              disabled={isPending}
+            >
+              {isPending ? "Saving..." : "Save"}
+            </button>
+          </div>
         </div>
       </div>
     </createTransactionFetcher.Form>
   );
 }
 
-function getCurrentDate() {
+function getCurrentDate(): string {
   return format(new Date(), "yyyy-MM-dd'T'HH:mm");
 }

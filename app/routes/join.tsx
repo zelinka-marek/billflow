@@ -125,7 +125,7 @@ export default function JoinPage() {
                   autoComplete="email"
                   aria-invalid={actionData?.errors?.email ? true : undefined}
                   aria-describedby="email-error"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-teal-500 focus-visible:ring-teal-500 sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
                 />
               </div>
               {actionData?.errors?.email ? (
@@ -150,7 +150,7 @@ export default function JoinPage() {
                   autoComplete="new-password"
                   aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby="password-error"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-teal-500 focus-visible:ring-teal-500 sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
                 />
               </div>
               {actionData?.errors?.password ? (
@@ -162,7 +162,7 @@ export default function JoinPage() {
             <div>
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100 hover:enabled:bg-teal-700 disabled:opacity-75"
+                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100 hover:enabled:bg-brand-700 disabled:opacity-75"
                 disabled={isPending}
               >
                 {isPending ? "Creating account..." : "Create account"}
@@ -172,7 +172,7 @@ export default function JoinPage() {
               <p className="text-center text-sm text-gray-600">
                 Already have an account?{" "}
                 <Link
-                  className="font-medium text-teal-600 hover:text-teal-500"
+                  className="font-medium text-brand-600 hover:text-brand-500"
                   to={{
                     pathname: "/login",
                     search: searchParams.toString(),

@@ -23,7 +23,7 @@ export function TransactionList({
 }: {
   transactions: Array<Transaction>;
 }) {
-  const groups = getTransactionGroups(transactions);
+  const groups = buildTransactionGroups(transactions);
 
   return (
     <div className="h-96 overflow-auto rounded-lg bg-white shadow">
@@ -173,14 +173,18 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
   );
 }
 
-function getTransactionGroups(transactions: Array<Transaction>) {
-  let groups: Array<{
-    date: string;
-    transactions: Array<Transaction>;
-    stats: { expenses: number; income: number };
-  }> = [];
+interface TransactionGroup {
+  date: string;
+  transactions: Array<Transaction>;
+  stats: ReturnType<typeof getTransactionStats>;
+}
 
-  transactions.forEach((transaction) => {
+function buildTransactionGroups(
+  transactions: Array<Transaction>
+): TransactionGroup[] {
+  let groups: Array<TransactionGroup> = [];
+
+  for (const transaction of transactions) {
     const date = format(new Date(transaction.dateTime), "P");
 
     const existingGroup = groups.find((group) => group.date === date);
@@ -194,27 +198,23 @@ function getTransactionGroups(transactions: Array<Transaction>) {
       groups.push({
         date,
         transactions: [transaction],
-        stats: { expenses: 0, income: 0 },
+        stats: { balance: 0, expenses: 0, income: 0 },
       });
     }
-  });
+  }
 
   // include stats (expenses and income) for each group
-  groups = groups.map((group) => {
-    const { expenses, income } = getTransactionStats(group.transactions);
-
-    return {
-      ...group,
-      stats: { expenses, income },
-    };
-  });
+  groups = groups.map((group) => ({
+    ...group,
+    stats: getTransactionStats(group.transactions),
+  }));
 
   // sort every transaction in each group by transaction.dateTime (desc)
-  groups.forEach((group) => {
+  for (const group of groups) {
     group.transactions.sort((a, b) =>
       compareDesc(new Date(a.dateTime), new Date(b.dateTime))
     );
-  });
+  }
 
   // sort every group by group.date (desc)
   groups.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));

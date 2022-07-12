@@ -9,7 +9,7 @@ import { useLoaderData } from "@remix-run/react";
 import { CreateTransactionForm } from "~/components/create-transaction-form";
 import { Navbar } from "~/components/navbar";
 import { TransactionList } from "~/components/transaction-list";
-import { TransactionOverview } from "~/components/transaction-overview";
+import { TransactionStats } from "~/components/transaction-stats";
 import {
   createTransaction,
   deleteTransaction,
@@ -146,16 +146,16 @@ export default function TransactionsPage() {
   const data = useLoaderData<LoaderData>();
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full border-t-8 border-blue-600">
       <Navbar />
-      <div className="py-10">
+      <div className="py-8">
         <main>
           <div className="mx-auto max-w-3xl space-y-8 px-4 sm:px-6">
             <section className="space-y-2">
               <h2 className="text-lg font-medium leading-6 text-gray-900">
                 Overview
               </h2>
-              <TransactionOverview transactions={data.transactions} />
+              <TransactionStats transactions={data.transactions} />
             </section>
             <section className="space-y-2">
               <h2 className="text-lg font-medium leading-6 text-gray-900">

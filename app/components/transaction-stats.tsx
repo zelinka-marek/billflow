@@ -6,7 +6,7 @@ const currencyFmt = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
-export function TransactionOverview({
+export function TransactionStats({
   transactions,
 }: {
   transactions: Array<Transaction>;
@@ -19,23 +19,23 @@ export function TransactionOverview({
         <dt className="truncate text-sm font-medium text-gray-500">
           Current Balance
         </dt>
-        <dd className="text-2xl font-semibold text-gray-900">
+        <dd className="text-lg font-semibold text-gray-900">
           {currencyFmt.format(balance)}
         </dd>
       </div>
-      <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <div className="ooverflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
         <dt className="truncate text-sm font-medium text-gray-500">
           Total Expenses
         </dt>
-        <dd className="text-2xl font-semibold text-gray-900">
+        <dd className="text-lg font-semibold text-gray-900">
           {currencyFmt.format(expenses)}
         </dd>
       </div>
-      <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <div className="ooverflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
         <dt className="truncate text-sm font-medium text-gray-500">
           Total Income
         </dt>
-        <dd className="text-2xl font-semibold text-gray-900">
+        <dd className="text-lg font-semibold text-gray-900">
           {currencyFmt.format(income)}
         </dd>
       </div>

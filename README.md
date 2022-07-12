@@ -1,5 +1,7 @@
 # billflow
 
+![screenshot](./screenshot.png)
+
 Keep track of your expenses and income!
 
 Created by [Marek Zelinka](https://github.com/zelinka-marek).

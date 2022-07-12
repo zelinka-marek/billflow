@@ -70,7 +70,7 @@ export function EditTransactionModal({
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <label
-              htmlFor="type"
+              htmlFor="edit-type"
               className="block text-sm font-medium text-gray-700"
             >
               Type
@@ -78,13 +78,13 @@ export function EditTransactionModal({
             <div className="mt-1">
               <select
                 ref={typeRef}
-                id="type"
+                id="edit-type"
                 name="type"
                 defaultValue={transaction.type}
                 aria-invalid={
                   editTransactionData?.errors?.type ? true : undefined
                 }
-                aria-describedby="type-error"
+                aria-describedby="edit-type-error"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 pr-10 focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm"
               >
                 <option value="expense">Expense</option>
@@ -92,14 +92,14 @@ export function EditTransactionModal({
               </select>
             </div>
             {editTransactionData?.errors?.type ? (
-              <p className="mt-2 text-sm text-red-600" id="type-error">
+              <p className="mt-2 text-sm text-red-600" id="edit-type-error">
                 {editTransactionData?.errors.type}
               </p>
             ) : null}
           </div>
           <div>
             <label
-              htmlFor="amount"
+              htmlFor="edit-amount"
               className="block text-sm font-medium text-gray-700"
             >
               Amount
@@ -112,7 +112,7 @@ export function EditTransactionModal({
                 ref={amountRef}
                 type="number"
                 name="amount"
-                id="amount"
+                id="edit-amount"
                 min="0.01"
                 step="0.01"
                 defaultValue={
@@ -123,7 +123,7 @@ export function EditTransactionModal({
                 aria-invalid={
                   editTransactionData?.errors?.amount ? true : undefined
                 }
-                aria-describedby="amount-error price-currency"
+                aria-describedby="edit-amount-error price-currency"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 pl-7 pr-12  focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
                 placeholder="0.00"
               />
@@ -134,14 +134,14 @@ export function EditTransactionModal({
               </div>
             </div>
             {editTransactionData?.errors?.amount ? (
-              <p className="mt-2 text-sm text-red-600" id="amount-error">
+              <p className="mt-2 text-sm text-red-600" id="edit-amount-error">
                 {editTransactionData?.errors.amount}
               </p>
             ) : null}
           </div>
           <div>
             <label
-              htmlFor="category"
+              htmlFor="edit-category"
               className="block text-sm font-medium text-gray-700"
             >
               Category
@@ -151,24 +151,24 @@ export function EditTransactionModal({
                 ref={categoryRef}
                 type="text"
                 name="category"
-                id="category"
+                id="edit-category"
                 defaultValue={transaction.category}
                 aria-invalid={
                   editTransactionData?.errors?.category ? true : undefined
                 }
-                aria-describedby="category-error"
+                aria-describedby="edit-category-error"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
               />
             </div>
             {editTransactionData?.errors?.category ? (
-              <p className="mt-2 text-sm text-red-600" id="category-error">
+              <p className="mt-2 text-sm text-red-600" id="edit-category-error">
                 {editTransactionData?.errors.category}
               </p>
             ) : null}
           </div>
           <div>
             <label
-              htmlFor="dateTime"
+              htmlFor="edit-dateTime"
               className="block text-sm font-medium text-gray-700"
             >
               Date and time
@@ -178,7 +178,7 @@ export function EditTransactionModal({
                 ref={dateTimeRef}
                 type="datetime-local"
                 name="dateTime"
-                id="dateTime"
+                id="edit-dateTime"
                 defaultValue={format(
                   new Date(transaction.dateTime),
                   "yyyy-MM-dd'T'HH:mm"
@@ -186,12 +186,12 @@ export function EditTransactionModal({
                 aria-invalid={
                   editTransactionData?.errors?.dateTime ? true : undefined
                 }
-                aria-describedby="dateTime-error"
+                aria-describedby="edit-dateTime-error"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
               />
             </div>
             {editTransactionData?.errors?.dateTime ? (
-              <p className="mt-2 text-sm text-red-600" id="dateTime-error">
+              <p className="mt-2 text-sm text-red-600" id="edit-dateTime-error">
                 {editTransactionData?.errors.dateTime}
               </p>
             ) : null}

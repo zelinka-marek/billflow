@@ -53,6 +53,8 @@ Prior to your first deployment, you'll need to do a few things:
   flyctl create billflow-4111-staging
   ```
 
+  > **Note:** Make sure this name matches the `app` set in your `fly.toml` file. Otherwise, you will not be able to deploy.
+
   - Initialize Git.
 
   ```sh

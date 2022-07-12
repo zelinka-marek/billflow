@@ -1,6 +1,6 @@
 # billflow
 
-![screenshot](./screenshot.png)
+![](./screenshot.png)
 
 Keep track of your expenses and income!
 

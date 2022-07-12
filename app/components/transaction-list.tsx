@@ -120,7 +120,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
       />
       <div className="min-w-0 flex-1">
         <div className="truncate">
-          <p className="truncate text-sm font-medium text-teal-600">
+          <p className="truncate text-sm font-medium text-brand-600">
             {currencyFmt.format(transaction.amount)}
           </p>
           <div className="mt-2 flex gap-6">
@@ -147,7 +147,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         <button
           type="submit"
           onClick={editModal.onOpen}
-          className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+          className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
         >
           <span className="sr-only">Edit transaction</span>
           <PencilIcon className="h-5 w-5" />
@@ -158,7 +158,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
           <button
             type="submit"
             disabled={isPendingDeletion}
-            className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 hover:enabled:bg-gray-50"
+            className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 hover:enabled:bg-gray-50"
           >
             <span className="sr-only">
               {isPendingDeletion
@@ -212,7 +212,7 @@ function buildTransactionGroups(
   // sort every transaction in each group by transaction.dateTime (desc)
   for (const group of groups) {
     group.transactions.sort((a, b) =>
-      compareDesc(new Date(a.createdAt), new Date(b.createdAt))
+      compareDesc(new Date(a.updatedAt), new Date(b.updatedAt))
     );
   }
 

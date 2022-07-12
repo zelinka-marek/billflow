@@ -34,6 +34,7 @@ export function EditTransactionModal({
   const amountRef = React.useRef<HTMLInputElement>(null);
   const categoryRef = React.useRef<HTMLInputElement>(null);
   const dateTimeRef = React.useRef<HTMLInputElement>(null);
+  const cancelButtonRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
     if (editTransactionData?.errors?.type) {
@@ -57,7 +58,12 @@ export function EditTransactionModal({
   }, [editTransactionData?.errors, editTransactionFetcher.type, onClose]);
 
   return (
-    <Modal title="Edit Transaction" open={open} onClose={onClose}>
+    <Modal
+      title="Edit Transaction"
+      initialFocus={cancelButtonRef}
+      open={open}
+      onClose={onClose}
+    >
       <editTransactionFetcher.Form method="post">
         <input type="hidden" name="intent" value="editTransaction" />
         <input type="hidden" name="transactionId" value={transaction.id} />
@@ -79,7 +85,7 @@ export function EditTransactionModal({
                   editTransactionData?.errors?.type ? true : undefined
                 }
                 aria-describedby="type-error"
-                className="block w-full rounded-md border-gray-300 bg-gray-50 pr-10 focus:outline-none focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 bg-gray-50 pr-10 focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm"
               >
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
@@ -118,7 +124,7 @@ export function EditTransactionModal({
                   editTransactionData?.errors?.amount ? true : undefined
                 }
                 aria-describedby="amount-error price-currency"
-                className="block w-full rounded-md border-gray-300 bg-gray-50 pl-7 pr-12  focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 bg-gray-50 pl-7 pr-12  focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
                 placeholder="0.00"
               />
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
@@ -151,7 +157,7 @@ export function EditTransactionModal({
                   editTransactionData?.errors?.category ? true : undefined
                 }
                 aria-describedby="category-error"
-                className="block w-full rounded-md border-gray-300 bg-gray-50 focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
               />
             </div>
             {editTransactionData?.errors?.category ? (
@@ -181,7 +187,7 @@ export function EditTransactionModal({
                   editTransactionData?.errors?.dateTime ? true : undefined
                 }
                 aria-describedby="dateTime-error"
-                className="block w-full rounded-md border-gray-300 bg-gray-50 focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
               />
             </div>
             {editTransactionData?.errors?.dateTime ? (
@@ -194,14 +200,15 @@ export function EditTransactionModal({
             <div className="sm:flex sm:flex-row-reverse">
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 hover:enabled:bg-brand-700 disabled:opacity-75 sm:ml-3 sm:w-auto"
+                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 hover:enabled:bg-brand-700 disabled:opacity-75 sm:ml-3 sm:w-auto"
                 disabled={isPending}
               >
                 {isPending ? "Saving..." : "Save"}
               </button>
               <button
+                ref={cancelButtonRef}
                 type="button"
-                className="mt-3 inline-flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 sm:mt-0 sm:w-auto"
+                className="mt-3 inline-flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 sm:mt-0 sm:w-auto"
                 onClick={onClose}
               >
                 Cancel

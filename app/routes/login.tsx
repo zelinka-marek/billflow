@@ -124,7 +124,7 @@ export default function LoginPage() {
                   autoComplete="email"
                   aria-invalid={actionData?.errors?.email ? true : undefined}
                   aria-describedby="email-error"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
                 />
               </div>
               {actionData?.errors?.email ? (
@@ -149,7 +149,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   aria-invalid={actionData?.errors?.password ? true : undefined}
                   aria-describedby="password-error"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus-visible:border-brand-500 focus-visible:ring-brand-500 sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
                 />
               </div>
               {actionData?.errors?.password ? (
@@ -161,7 +161,7 @@ export default function LoginPage() {
             <div>
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100 hover:enabled:bg-brand-700 disabled:opacity-75"
+                className="inline-flex w-full items-center justify-center rounded-md border border-transparent bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-gray-100 hover:enabled:bg-brand-700 disabled:opacity-75"
                 disabled={isPending}
               >
                 {isPending ? "Logging in..." : "Log in"}
@@ -173,7 +173,7 @@ export default function LoginPage() {
                   id="remember"
                   name="remember"
                   type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-brand-600 focus-visible:ring-brand-500"
+                  className="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                 />
                 <label
                   htmlFor="remember"

@@ -22,7 +22,7 @@ export function Navbar() {
               <Form action="/logout" method="post">
                 <button
                   type="submit"
-                  className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+                  className="rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
                 >
                   <span className="sr-only">Sign out</span>
                   <LogoutIcon className="h-6 w-6" />

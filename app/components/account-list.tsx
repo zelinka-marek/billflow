@@ -21,72 +21,74 @@ const currencyFmt = new Intl.NumberFormat("en-US", {
 export function AccountList({ accounts }: { accounts: Array<Account> }) {
   const groups = buildAccountGroups(accounts);
 
+  if (accounts.length === 0) {
+    return (
+      <div className="flex h-full flex-col justify-center text-center">
+        <svg
+          className="mx-auto h-12 w-12 text-gray-400"
+          xmlns="http://www.w3.org/2000/svg"
+          stroke="currentColor"
+          fill="none"
+          viewBox="0 0 48 48"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6"
+          />
+        </svg>
+        <h3 className="mt-2 text-sm font-medium text-gray-900">No accounts</h3>
+        <p className="mt-1 text-sm text-gray-500">
+          You haven&apos;t added any accounts yet.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="h-96 overflow-auto rounded-lg bg-white shadow">
-      {accounts.length > 0 ? (
-        groups.map((group) => (
-          <div key={group.date} className="relative">
-            <div className="sticky top-0 flex items-center bg-gray-50/90 px-4 py-3 ring-1 ring-gray-900/10 backdrop-blur-sm">
-              <div className="min-w-0 flex-1">
-                <h3
-                  title={format(new Date(group.date), "P")}
-                  className="text-sm font-medium text-gray-500"
-                >
-                  {format(new Date(group.date), "MMM d")}
-                  {isToday(new Date(group.date))
-                    ? ", Today"
-                    : isYesterday(new Date(group.date))
-                    ? ", Yesterday"
-                    : null}
-                </h3>
-              </div>
-              <div className="ml-4 flex gap-3">
-                <p
-                  title="Total expenses"
-                  className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800"
-                >
-                  {currencyFmt.format(group.stats.expenses)}
-                </p>
-                <p
-                  title="Total income"
-                  className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
-                >
-                  {currencyFmt.format(group.stats.income)}
-                </p>
-              </div>
+    <div className="space-y-6">
+      {groups.map((group) => (
+        <div key={group.date} className="space-y-3">
+          <div className="flex items-center px-4 sm:px-6">
+            <div className="min-w-0 flex-1">
+              <h3
+                title={format(new Date(group.date), "P")}
+                className="text-sm font-medium text-gray-600"
+              >
+                {format(new Date(group.date), "MMM d")}
+                {isToday(new Date(group.date))
+                  ? ", Today"
+                  : isYesterday(new Date(group.date))
+                  ? ", Yesterday"
+                  : null}
+              </h3>
             </div>
+            <div className="ml-4 flex gap-3">
+              <p
+                title="Total expenses"
+                className="inline-flex items-center rounded-full border border-red-200 bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800"
+              >
+                {currencyFmt.format(group.stats.expenses)}
+              </p>
+              <p
+                title="Total income"
+                className="inline-flex items-center rounded-full border border-green-200 bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
+              >
+                {currencyFmt.format(group.stats.income)}
+              </p>
+            </div>
+          </div>
+          <div className="overflow-hidden bg-white shadow sm:rounded-md">
             <ul role="list" className="divide-y divide-gray-200">
               {group.accounts.map((account) => (
                 <AccountItem key={account.id} account={account} />
               ))}
             </ul>
           </div>
-        ))
-      ) : (
-        <div className="flex h-full flex-col justify-center text-center">
-          <svg
-            className="mx-auto h-12 w-12 text-gray-400"
-            xmlns="http://www.w3.org/2000/svg"
-            stroke="currentColor"
-            fill="none"
-            viewBox="0 0 48 48"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6"
-            />
-          </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-900">
-            No accounts
-          </h3>
-          <p className="mt-1 text-sm text-gray-500">
-            You haven&apos;t added any accounts yet.
-          </p>
         </div>
-      )}
+      ))}
     </div>
   );
 }

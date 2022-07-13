@@ -140,27 +140,33 @@ export default function AccountsPage() {
       <Navbar />
       <div className="py-8">
         <main>
-          <div className="mx-auto max-w-3xl space-y-8 px-4 sm:px-6">
-            <section className="space-y-2">
-              <h2 className="text-lg font-medium leading-6 text-gray-900">
-                Overview
-              </h2>
+          <div className="mx-auto max-w-3xl space-y-8 sm:px-6">
+            <section className="space-y-5">
+              <div className="px-4 sm:px-0">
+                <h2 className="text-lg font-medium leading-6 text-gray-900">
+                  Overview
+                </h2>
+              </div>
               <AccountStatistics accounts={data.accounts} />
             </section>
-            <section className="space-y-2">
-              <h2 className="text-lg font-medium leading-6 text-gray-900">
-                New Transaction
-              </h2>
-              <div className="overflow-hidden rounded-lg bg-white shadow">
+            <section className="space-y-5">
+              <div className="px-4 sm:px-0">
+                <h2 className="text-lg font-medium leading-6 text-gray-900">
+                  New Transaction
+                </h2>
+              </div>
+              <div className="overflow-hidden bg-white shadow sm:rounded-lg">
                 <div className="px-4 py-5 sm:p-6">
                   <CreateAccountForm />
                 </div>
               </div>
             </section>
-            <section className="space-y-2">
-              <h2 className="text-lg font-medium leading-6 text-gray-900">
-                History
-              </h2>
+            <section className="space-y-5">
+              <div className="px-4 sm:px-0">
+                <h2 className="text-lg font-medium leading-6 text-gray-900">
+                  History
+                </h2>
+              </div>
               <AccountList accounts={data.accounts} />
             </section>
           </div>

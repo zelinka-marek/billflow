@@ -11,7 +11,7 @@ export function AccountStatistics({ accounts }: { accounts: Array<Account> }) {
 
   return (
     <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-      <div className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <div className="overflow-hidden bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
         <dt className="truncate text-sm font-medium text-gray-500">
           Current Balance
         </dt>
@@ -19,7 +19,7 @@ export function AccountStatistics({ accounts }: { accounts: Array<Account> }) {
           {currencyFmt.format(balance)}
         </dd>
       </div>
-      <div className="ooverflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <div className="ooverflow-hidden bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
         <dt className="truncate text-sm font-medium text-gray-500">
           Total Expenses
         </dt>
@@ -27,7 +27,7 @@ export function AccountStatistics({ accounts }: { accounts: Array<Account> }) {
           {currencyFmt.format(expenses)}
         </dd>
       </div>
-      <div className="ooverflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6">
+      <div className="ooverflow-hidden bg-white px-4 py-5 shadow sm:rounded-lg sm:p-6">
         <dt className="truncate text-sm font-medium text-gray-500">
           Total Income
         </dt>

@@ -1,17 +1,13 @@
-import type { Transaction } from "~/models/transaction.model";
-import { getTransactionStats } from "~/utils";
+import type { Account } from "~/models/account.server";
+import { getAccountStatistics } from "~/utils";
 
 const currencyFmt = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-export function TransactionStats({
-  transactions,
-}: {
-  transactions: Array<Transaction>;
-}) {
-  const { balance, expenses, income } = getTransactionStats(transactions);
+export function AccountStatistics({ accounts }: { accounts: Array<Account> }) {
+  const { balance, expenses, income } = getAccountStatistics(accounts);
 
   return (
     <dl className="grid grid-cols-1 gap-5 sm:grid-cols-3">

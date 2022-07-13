@@ -9,25 +9,21 @@ import classNames from "clsx";
 import { compareDesc, format, isToday, isYesterday } from "date-fns";
 
 import { useDisclosure } from "~/hooks/use-disclosure";
-import type { Transaction } from "~/models/transaction.model";
-import { getTransactionStats } from "~/utils";
-import { EditTransactionModal } from "./edit-transaction-modal";
+import type { Account } from "~/models/account.server";
+import { getAccountStatistics } from "~/utils";
+import { EditAccountModal } from "./edit-account-modal";
 
 const currencyFmt = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
 
-export function TransactionList({
-  transactions,
-}: {
-  transactions: Array<Transaction>;
-}) {
-  const groups = buildTransactionGroups(transactions);
+export function AccountList({ accounts }: { accounts: Array<Account> }) {
+  const groups = buildAccountGroups(accounts);
 
   return (
     <div className="h-96 overflow-auto rounded-lg bg-white shadow">
-      {transactions.length > 0 ? (
+      {accounts.length > 0 ? (
         groups.map((group) => (
           <div key={group.date} className="relative">
             <div className="sticky top-0 flex items-center bg-gray-50/90 px-4 py-3 ring-1 ring-gray-900/10 backdrop-blur-sm">
@@ -60,11 +56,8 @@ export function TransactionList({
               </div>
             </div>
             <ul role="list" className="divide-y divide-gray-200">
-              {group.transactions.map((transaction) => (
-                <TransactionItem
-                  key={transaction.id}
-                  transaction={transaction}
-                />
+              {group.accounts.map((account) => (
+                <AccountItem key={account.id} account={account} />
               ))}
             </ul>
           </div>
@@ -87,10 +80,10 @@ export function TransactionList({
             />
           </svg>
           <h3 className="mt-2 text-sm font-medium text-gray-900">
-            No transactions
+            No accounts
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            You haven&apos;t added any transactions yet.
+            You haven&apos;t added any accounts yet.
           </p>
         </div>
       )}
@@ -98,11 +91,10 @@ export function TransactionList({
   );
 }
 
-function TransactionItem({ transaction }: { transaction: Transaction }) {
-  const deleteTransactionFetcher = useFetcher();
+function AccountItem({ account }: { account: Account }) {
+  const deleteaccountFetcher = useFetcher();
   const isPendingDeletion =
-    deleteTransactionFetcher.submission?.formData.get("transactionId") ===
-    transaction.id;
+    deleteaccountFetcher.submission?.formData.get("accountId") === account.id;
 
   const editModal = useDisclosure();
 
@@ -113,24 +105,24 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
         "flex items-center p-4 sm:px-6"
       )}
     >
-      <EditTransactionModal
+      <EditAccountModal
         open={editModal.isOpen}
         onClose={editModal.onClose}
-        transaction={transaction}
+        account={account}
       />
       <div className="min-w-0 flex-1">
         <div className="truncate">
           <p className="truncate text-sm font-medium text-brand-600">
-            {currencyFmt.format(transaction.amount)}
+            {currencyFmt.format(account.amount)}
           </p>
           <div className="mt-2 flex gap-6">
             <p
-              title={format(new Date(transaction.dateTime), "PP 'at' p")}
+              title={format(new Date(account.date), "PP 'at' p")}
               className="flex items-center text-sm text-gray-500"
             >
               <ClockIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" />
-              <time dateTime={new Date(transaction.dateTime).toISOString()}>
-                {format(new Date(transaction.dateTime), "p")}
+              <time dateTime={new Date(account.date).toISOString()}>
+                {format(new Date(account.date), "p")}
               </time>
             </p>
             <p
@@ -138,7 +130,7 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
               className="flex items-center text-sm text-gray-500"
             >
               <TagIcon className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" />
-              {transaction.category}
+              {account.category}
             </p>
           </div>
         </div>
@@ -149,55 +141,51 @@ function TransactionItem({ transaction }: { transaction: Transaction }) {
           onClick={editModal.onOpen}
           className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
         >
-          <span className="sr-only">Edit transaction</span>
+          <span className="sr-only">Edit account</span>
           <PencilIcon className="h-5 w-5" />
         </button>
-        <deleteTransactionFetcher.Form method="post">
-          <input type="hidden" name="intent" value="deleteTransaction" />
-          <input type="hidden" name="transactionId" value={transaction.id} />
+        <deleteaccountFetcher.Form method="post">
+          <input type="hidden" name="intent" value="deleteaccount" />
+          <input type="hidden" name="accountId" value={account.id} />
           <button
             type="submit"
             disabled={isPendingDeletion}
             className="inline-flex items-center rounded-full border border-gray-300 bg-white p-2 text-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 hover:enabled:bg-gray-50"
           >
             <span className="sr-only">
-              {isPendingDeletion
-                ? "Deleting transaction..."
-                : "Delete transaction"}
+              {isPendingDeletion ? "Deleting account..." : "Delete account"}
             </span>
             <TrashIcon className="h-5 w-5" />
           </button>
-        </deleteTransactionFetcher.Form>
+        </deleteaccountFetcher.Form>
       </div>
     </li>
   );
 }
 
-interface TransactionGroup {
+interface AccountGroup {
   date: string;
-  transactions: Array<Transaction>;
-  stats: ReturnType<typeof getTransactionStats>;
+  accounts: Array<Account>;
+  stats: ReturnType<typeof getAccountStatistics>;
 }
 
-function buildTransactionGroups(
-  transactions: Array<Transaction>
-): TransactionGroup[] {
-  let groups: Array<TransactionGroup> = [];
+function buildAccountGroups(accounts: Array<Account>): AccountGroup[] {
+  let groups: Array<AccountGroup> = [];
 
-  for (const transaction of transactions) {
-    const date = format(new Date(transaction.dateTime), "P");
+  for (const account of accounts) {
+    const date = format(new Date(account.date), "P");
 
     const existingGroup = groups.find((group) => group.date === date);
     if (existingGroup) {
       groups = groups.map((group) =>
         group.date === date
-          ? { ...group, transactions: [...group.transactions, transaction] }
+          ? { ...group, accounts: [...group.accounts, account] }
           : group
       );
     } else {
       groups.push({
         date,
-        transactions: [transaction],
+        accounts: [account],
         stats: { balance: 0, expenses: 0, income: 0 },
       });
     }
@@ -206,13 +194,13 @@ function buildTransactionGroups(
   // include stats (expenses and income) for each group
   groups = groups.map((group) => ({
     ...group,
-    stats: getTransactionStats(group.transactions),
+    stats: getAccountStatistics(group.accounts),
   }));
 
-  // sort every transaction in each group by transaction.dateTime (desc)
+  // sort every account in each group by account.date (desc)
   for (const group of groups) {
-    group.transactions.sort((a, b) =>
-      compareDesc(new Date(a.dateTime), new Date(b.dateTime))
+    group.accounts.sort((a, b) =>
+      compareDesc(new Date(a.date), new Date(b.date))
     );
   }
 

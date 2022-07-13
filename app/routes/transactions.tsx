@@ -1,33 +1,29 @@
-import type {
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from "@remix-run/node";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { CreateTransactionForm } from "~/components/create-transaction-form";
+import { AccountList } from "~/components/account-list";
+import { AccountStatistics } from "~/components/account-statistics";
+import { CreateAccountForm } from "~/components/create-account-form";
 import { Navbar } from "~/components/navbar";
-import { TransactionList } from "~/components/transaction-list";
-import { TransactionStats } from "~/components/transaction-stats";
 import {
-  createTransaction,
-  deleteTransaction,
-  getTransaction,
-  getTransactionListItems,
-  updateTransaction,
-} from "~/models/transaction.model";
+  createAccount,
+  deleteAccount,
+  getAccount,
+  getAccountListItems,
+  updateAccount,
+} from "~/models/account.server";
 import { requireUserId } from "~/session.server";
 
 interface LoaderData {
-  transactions: Awaited<ReturnType<typeof getTransactionListItems>>;
+  accounts: Awaited<ReturnType<typeof getAccountListItems>>;
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
-  const transactions = await getTransactionListItems({ userId });
+  const accounts = await getAccountListItems({ userId });
 
-  return json<LoaderData>({ transactions });
+  return json<LoaderData>({ accounts });
 };
 
 type ActionData = {
@@ -35,7 +31,7 @@ type ActionData = {
     type?: string;
     amount?: string;
     category?: string;
-    dateTime?: string;
+    date?: string;
   };
 };
 
@@ -45,11 +41,11 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   const intent = formData.get("intent");
 
-  if (intent === "createTransaction" || intent === "editTransaction") {
+  if (intent === "createAccount" || intent === "editAccount") {
     const type = formData.get("type");
     const amount = formData.get("amount");
     const category = formData.get("category");
-    const dateTime = formData.get("dateTime");
+    const date = formData.get("date");
 
     if (typeof type !== "string") {
       return json<ActionData>(
@@ -82,53 +78,53 @@ export const action: ActionFunction = async ({ request }) => {
       );
     }
 
-    if (typeof dateTime !== "string" || isNaN(Date.parse(dateTime))) {
+    if (typeof date !== "string" || isNaN(Date.parse(date))) {
       return json<ActionData>(
-        { errors: { dateTime: "Invalid date." } },
+        { errors: { date: "Invalid date." } },
         { status: 400 }
       );
     }
 
-    if (intent === "createTransaction") {
-      await createTransaction({
+    if (intent === "createAccount") {
+      await createAccount({
         type,
         amount: type === "expense" ? -parseFloat(amount) : parseFloat(amount),
         category,
-        dateTime: new Date(dateTime),
+        date: new Date(date),
         userId,
       });
 
       return new Response(null);
-    } else if (intent === "editTransaction") {
-      const transactionId = String(formData.get("transactionId"));
+    } else if (intent === "editAccount") {
+      const accountId = String(formData.get("accountId"));
 
-      // make sure the transaction belongs to the user
-      const transaction = await getTransaction({ id: transactionId, userId });
-      if (!transaction) {
-        throw json({ error: "Transaction not found" }, { status: 404 });
+      // make sure the Account belongs to the user
+      const account = await getAccount({ id: accountId, userId });
+      if (!account) {
+        throw json({ error: "Account not found" }, { status: 404 });
       }
 
-      await updateTransaction({
-        id: transactionId,
+      await updateAccount({
+        id: accountId,
         type,
         amount: type === "expense" ? -parseFloat(amount) : parseFloat(amount),
         category,
-        dateTime: new Date(dateTime),
+        date: new Date(date),
         userId,
       });
 
       return new Response(null);
     }
-  } else if (intent === "deleteTransaction") {
-    const transactionId = String(formData.get("transactionId"));
+  } else if (intent === "deleteAccount") {
+    const accountId = String(formData.get("accountId"));
 
-    // make sure the transaction belongs to the user
-    const transaction = await getTransaction({ id: transactionId, userId });
-    if (!transaction) {
-      throw json({ error: "Transaction not found" }, { status: 404 });
+    // make sure the Account belongs to the user
+    const account = await getAccount({ id: accountId, userId });
+    if (!account) {
+      throw json({ error: "Account not found" }, { status: 404 });
     }
 
-    await deleteTransaction({ id: transactionId, userId });
+    await deleteAccount({ id: accountId, userId });
 
     return new Response(null);
   }
@@ -136,13 +132,7 @@ export const action: ActionFunction = async ({ request }) => {
   throw json({ message: `Unknown intent: ${intent}` }, { status: 400 });
 };
 
-export const meta: MetaFunction = () => {
-  return {
-    title: "Transactions - billflow",
-  };
-};
-
-export default function TransactionsPage() {
+export default function AccountsPage() {
   const data = useLoaderData<LoaderData>();
 
   return (
@@ -155,7 +145,7 @@ export default function TransactionsPage() {
               <h2 className="text-lg font-medium leading-6 text-gray-900">
                 Overview
               </h2>
-              <TransactionStats transactions={data.transactions} />
+              <AccountStatistics accounts={data.accounts} />
             </section>
             <section className="space-y-2">
               <h2 className="text-lg font-medium leading-6 text-gray-900">
@@ -163,7 +153,7 @@ export default function TransactionsPage() {
               </h2>
               <div className="overflow-hidden rounded-lg bg-white shadow">
                 <div className="px-4 py-5 sm:p-6">
-                  <CreateTransactionForm />
+                  <CreateAccountForm />
                 </div>
               </div>
             </section>
@@ -171,7 +161,7 @@ export default function TransactionsPage() {
               <h2 className="text-lg font-medium leading-6 text-gray-900">
                 History
               </h2>
-              <TransactionList transactions={data.transactions} />
+              <AccountList accounts={data.accounts} />
             </section>
           </div>
         </main>

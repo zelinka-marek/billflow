@@ -2,71 +2,68 @@ import { useFetcher } from "@remix-run/react";
 import { format } from "date-fns";
 import * as React from "react";
 
-import type { Transaction } from "~/models/transaction.model";
+import type { Account } from "~/models/account.server";
 import { Modal } from "./modal";
 
-interface EditTransactionActionData {
+interface EditAccountActionData {
   errors: {
     type?: string;
     amount?: string;
     category?: string;
-    dateTime?: string;
+    date?: string;
   };
 }
 
-export function EditTransactionModal({
+export function EditAccountModal({
   open,
   onClose,
-  transaction,
+  account,
 }: {
   open: boolean;
   onClose: () => void;
-  transaction: Transaction;
+  account: Account;
 }) {
-  const editTransactionFetcher = useFetcher();
+  const editAccountFetcher = useFetcher();
 
-  const editTransactionData = editTransactionFetcher.data as
-    | EditTransactionActionData
+  const editAccountData = editAccountFetcher.data as
+    | EditAccountActionData
     | undefined;
-  const isPending = Boolean(editTransactionFetcher.submission);
+  const isPending = Boolean(editAccountFetcher.submission);
 
   const typeRef = React.useRef<HTMLSelectElement>(null);
   const amountRef = React.useRef<HTMLInputElement>(null);
   const categoryRef = React.useRef<HTMLInputElement>(null);
-  const dateTimeRef = React.useRef<HTMLInputElement>(null);
+  const dateRef = React.useRef<HTMLInputElement>(null);
   const cancelButtonRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
-    if (editTransactionData?.errors?.type) {
+    if (editAccountData?.errors?.type) {
       typeRef.current?.focus();
-    } else if (editTransactionData?.errors?.amount) {
+    } else if (editAccountData?.errors?.amount) {
       amountRef.current?.focus();
-    } else if (editTransactionData?.errors?.category) {
+    } else if (editAccountData?.errors?.category) {
       categoryRef.current?.focus();
-    } else if (editTransactionData?.errors?.dateTime) {
-      dateTimeRef.current?.focus();
+    } else if (editAccountData?.errors?.date) {
+      dateRef.current?.focus();
     }
-  }, [editTransactionData?.errors]);
+  }, [editAccountData?.errors]);
 
   React.useEffect(() => {
-    if (
-      editTransactionFetcher.type === "done" &&
-      !editTransactionData?.errors
-    ) {
+    if (editAccountFetcher.type === "done" && !editAccountData?.errors) {
       onClose();
     }
-  }, [editTransactionData?.errors, editTransactionFetcher.type, onClose]);
+  }, [editAccountData?.errors, editAccountFetcher.type, onClose]);
 
   return (
     <Modal
-      title="Edit Transaction"
+      title="Edit Account"
       initialFocus={cancelButtonRef}
       open={open}
       onClose={onClose}
     >
-      <editTransactionFetcher.Form method="post">
-        <input type="hidden" name="intent" value="editTransaction" />
-        <input type="hidden" name="transactionId" value={transaction.id} />
+      <editAccountFetcher.Form method="post">
+        <input type="hidden" name="intent" value="editAccount" />
+        <input type="hidden" name="accountId" value={account.id} />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <label
@@ -80,10 +77,8 @@ export function EditTransactionModal({
                 ref={typeRef}
                 id="edit-type"
                 name="type"
-                defaultValue={transaction.type}
-                aria-invalid={
-                  editTransactionData?.errors?.type ? true : undefined
-                }
+                defaultValue={account.type}
+                aria-invalid={editAccountData?.errors?.type ? true : undefined}
                 aria-describedby="edit-type-error"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 pr-10 focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm"
               >
@@ -91,9 +86,9 @@ export function EditTransactionModal({
                 <option value="income">Income</option>
               </select>
             </div>
-            {editTransactionData?.errors?.type ? (
+            {editAccountData?.errors?.type ? (
               <p className="mt-2 text-sm text-red-600" id="edit-type-error">
-                {editTransactionData?.errors.type}
+                {editAccountData?.errors.type}
               </p>
             ) : null}
           </div>
@@ -116,26 +111,26 @@ export function EditTransactionModal({
                 min="0.01"
                 step="0.01"
                 defaultValue={
-                  transaction.type === "expense"
-                    ? Math.abs(transaction.amount)
-                    : transaction.amount
+                  account.type === "expense"
+                    ? Math.abs(account.amount)
+                    : account.amount
                 }
                 aria-invalid={
-                  editTransactionData?.errors?.amount ? true : undefined
+                  editAccountData?.errors?.amount ? true : undefined
                 }
-                aria-describedby="edit-amount-error price-currency"
+                aria-describedby="edit-amount-error amount-currency"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 pl-7 pr-12  focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
                 placeholder="0.00"
               />
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                <span className="text-gray-500 sm:text-sm" id="price-currency">
+                <span className="text-gray-500 sm:text-sm" id="amount-currency">
                   USD
                 </span>
               </div>
             </div>
-            {editTransactionData?.errors?.amount ? (
+            {editAccountData?.errors?.amount ? (
               <p className="mt-2 text-sm text-red-600" id="edit-amount-error">
-                {editTransactionData?.errors.amount}
+                {editAccountData?.errors.amount}
               </p>
             ) : null}
           </div>
@@ -152,47 +147,45 @@ export function EditTransactionModal({
                 type="text"
                 name="category"
                 id="edit-category"
-                defaultValue={transaction.category}
+                defaultValue={account.category}
                 aria-invalid={
-                  editTransactionData?.errors?.category ? true : undefined
+                  editAccountData?.errors?.category ? true : undefined
                 }
                 aria-describedby="edit-category-error"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
               />
             </div>
-            {editTransactionData?.errors?.category ? (
+            {editAccountData?.errors?.category ? (
               <p className="mt-2 text-sm text-red-600" id="edit-category-error">
-                {editTransactionData?.errors.category}
+                {editAccountData?.errors.category}
               </p>
             ) : null}
           </div>
           <div>
             <label
-              htmlFor="edit-dateTime"
+              htmlFor="edit-date"
               className="block text-sm font-medium text-gray-700"
             >
               Date and time
             </label>
             <div className="mt-1">
               <input
-                ref={dateTimeRef}
+                ref={dateRef}
                 type="datetime-local"
-                name="dateTime"
-                id="edit-dateTime"
+                name="date"
+                id="edit-date"
                 defaultValue={format(
-                  new Date(transaction.dateTime),
+                  new Date(account.date),
                   "yyyy-MM-dd'T'HH:mm"
                 )}
-                aria-invalid={
-                  editTransactionData?.errors?.dateTime ? true : undefined
-                }
-                aria-describedby="edit-dateTime-error"
+                aria-invalid={editAccountData?.errors?.date ? true : undefined}
+                aria-describedby="edit-date-error"
                 className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
               />
             </div>
-            {editTransactionData?.errors?.dateTime ? (
-              <p className="mt-2 text-sm text-red-600" id="edit-dateTime-error">
-                {editTransactionData?.errors.dateTime}
+            {editAccountData?.errors?.date ? (
+              <p className="mt-2 text-sm text-red-600" id="edit-date-error">
+                {editAccountData?.errors.date}
               </p>
             ) : null}
           </div>
@@ -216,7 +209,7 @@ export function EditTransactionModal({
             </div>
           </div>
         </div>
-      </editTransactionFetcher.Form>
+      </editAccountFetcher.Form>
     </Modal>
   );
 }

@@ -2,58 +2,58 @@ import { useFetcher } from "@remix-run/react";
 import { format } from "date-fns";
 import * as React from "react";
 
-interface CreateTransactionActionData {
+interface CreateAccountActionData {
   errors: {
     type?: string;
     amount?: string;
     category?: string;
-    dateTime?: string;
+    date?: string;
   };
 }
 
-export function CreateTransactionForm() {
-  const createTransactionFetcher = useFetcher();
+export function CreateAccountForm() {
+  const createAccountFetcher = useFetcher();
 
-  const createTransactionData = createTransactionFetcher.data as
-    | CreateTransactionActionData
+  const createAccountData = createAccountFetcher.data as
+    | CreateAccountActionData
     | undefined;
-  const isPending = Boolean(createTransactionFetcher.submission);
+  const isPending = Boolean(createAccountFetcher.submission);
 
   const typeRef = React.useRef<HTMLSelectElement>(null);
   const amountRef = React.useRef<HTMLInputElement>(null);
   const categoryRef = React.useRef<HTMLInputElement>(null);
-  const dateTimeRef = React.useRef<HTMLInputElement>(null);
+  const dateRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
-    if (createTransactionData?.errors?.type) {
+    if (createAccountData?.errors?.type) {
       typeRef.current?.focus();
-    } else if (createTransactionData?.errors?.amount) {
+    } else if (createAccountData?.errors?.amount) {
       amountRef.current?.focus();
-    } else if (createTransactionData?.errors?.category) {
+    } else if (createAccountData?.errors?.category) {
       categoryRef.current?.focus();
-    } else if (createTransactionData?.errors?.dateTime) {
-      dateTimeRef.current?.focus();
+    } else if (createAccountData?.errors?.date) {
+      dateRef.current?.focus();
     }
-  }, [createTransactionData?.errors]);
+  }, [createAccountData?.errors]);
 
   React.useEffect(() => {
     if (
-      createTransactionFetcher.type === "done" &&
-      !createTransactionData?.errors &&
+      createAccountFetcher.type === "done" &&
+      !createAccountData?.errors &&
       amountRef.current &&
       categoryRef.current &&
-      dateTimeRef.current
+      dateRef.current
     ) {
       amountRef.current.value = "";
       categoryRef.current.value = "";
-      dateTimeRef.current.value = getCurrentDate();
+      dateRef.current.value = getCurrentDate();
       amountRef.current.focus();
     }
-  }, [createTransactionFetcher.type, createTransactionData?.errors]);
+  }, [createAccountFetcher.type, createAccountData?.errors]);
 
   return (
-    <createTransactionFetcher.Form method="post">
-      <input type="hidden" name="intent" value="createTransaction" />
+    <createAccountFetcher.Form method="post">
+      <input type="hidden" name="intent" value="createAccount" />
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label
@@ -67,9 +67,7 @@ export function CreateTransactionForm() {
               ref={typeRef}
               id="type"
               name="type"
-              aria-invalid={
-                createTransactionData?.errors?.type ? true : undefined
-              }
+              aria-invalid={createAccountData?.errors?.type ? true : undefined}
               aria-describedby="type-error"
               className="block w-full rounded-md border border-gray-300 bg-gray-50 pr-10 focus:border-brand-500 focus:outline-none focus:ring-brand-500 sm:text-sm"
             >
@@ -77,9 +75,9 @@ export function CreateTransactionForm() {
               <option value="income">Income</option>
             </select>
           </div>
-          {createTransactionData?.errors?.type ? (
+          {createAccountData?.errors?.type ? (
             <p className="mt-2 text-sm text-red-600" id="type-error">
-              {createTransactionData?.errors.type}
+              {createAccountData?.errors.type}
             </p>
           ) : null}
         </div>
@@ -102,7 +100,7 @@ export function CreateTransactionForm() {
               min="0.01"
               step="0.01"
               aria-invalid={
-                createTransactionData?.errors?.amount ? true : undefined
+                createAccountData?.errors?.amount ? true : undefined
               }
               aria-describedby="amount-error price-currency"
               className="block w-full rounded-md border-gray-300 bg-gray-50 pl-7 pr-12 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
@@ -114,9 +112,9 @@ export function CreateTransactionForm() {
               </span>
             </div>
           </div>
-          {createTransactionData?.errors?.amount ? (
+          {createAccountData?.errors?.amount ? (
             <p className="mt-2 text-sm text-red-600" id="amount-error">
-              {createTransactionData?.errors.amount}
+              {createAccountData?.errors.amount}
             </p>
           ) : null}
         </div>
@@ -134,42 +132,40 @@ export function CreateTransactionForm() {
               name="category"
               id="category"
               aria-invalid={
-                createTransactionData?.errors?.category ? true : undefined
+                createAccountData?.errors?.category ? true : undefined
               }
               aria-describedby="category-error"
               className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
             />
           </div>
-          {createTransactionData?.errors?.category ? (
+          {createAccountData?.errors?.category ? (
             <p className="mt-2 text-sm text-red-600" id="category-error">
-              {createTransactionData?.errors.category}
+              {createAccountData?.errors.category}
             </p>
           ) : null}
         </div>
         <div>
           <label
-            htmlFor="dateTime"
+            htmlFor="date"
             className="block text-sm font-medium text-gray-700"
           >
             Date and time
           </label>
           <div className="mt-1">
             <input
-              ref={dateTimeRef}
+              ref={dateRef}
               type="datetime-local"
-              name="dateTime"
-              id="dateTime"
+              name="date"
+              id="date"
               defaultValue={getCurrentDate()}
-              aria-invalid={
-                createTransactionData?.errors?.dateTime ? true : undefined
-              }
-              aria-describedby="dateTime-error"
+              aria-invalid={createAccountData?.errors?.date ? true : undefined}
+              aria-describedby="date-error"
               className="block w-full rounded-md border-gray-300 bg-gray-50 focus:border-brand-500 focus:ring-brand-500 sm:text-sm"
             />
           </div>
-          {createTransactionData?.errors?.dateTime ? (
-            <p className="mt-2 text-sm text-red-600" id="dateTime-error">
-              {createTransactionData?.errors.dateTime}
+          {createAccountData?.errors?.date ? (
+            <p className="mt-2 text-sm text-red-600" id="date-error">
+              {createAccountData?.errors.date}
             </p>
           ) : null}
         </div>
@@ -185,7 +181,7 @@ export function CreateTransactionForm() {
           </div>
         </div>
       </div>
-    </createTransactionFetcher.Form>
+    </createAccountFetcher.Form>
   );
 }
 

@@ -14,8 +14,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password     Password?
-  transactions Transaction[]
+  password Password?
+  accounts Account[]
 }
 
 model Password {
@@ -25,12 +25,12 @@ model Password {
   userId String @unique
 }
 
-model Transaction {
+model Account {
   id       String   @id @default(cuid())
   type     String
   amount   Float
   category String
-  dateTime DateTime
+  date     DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

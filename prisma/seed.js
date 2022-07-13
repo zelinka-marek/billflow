@@ -24,22 +24,22 @@ async function seed() {
     },
   });
 
-  await prisma.transaction.create({
+  await prisma.account.create({
     data: {
       type: "expense",
       amount: 600,
       category: "Car",
-      dateTime: new Date(),
+      date: new Date(),
       userId: user.id,
     },
   });
 
-  await prisma.transaction.create({
+  await prisma.account.create({
     data: {
       type: "expense",
       amount: 120,
       category: "Food",
-      dateTime: new Date(),
+      date: new Date(),
       userId: user.id,
     },
   });
